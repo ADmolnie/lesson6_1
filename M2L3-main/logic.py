@@ -1,3 +1,5 @@
+import telebot
+from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 # Задание 2 - Импортируй нужные классы
 
 class Question:
@@ -8,9 +10,22 @@ class Question:
         self.options = options
 
     # Задание 1 - Создай геттер для получения текста вопроса
-    
-    def gen_markup(self):
+    @property
+    def text(self):
+        return self.__text
         # Задание 3 - Создай метод для генерации Inline клавиатуры
+
+    def gen_markup():
+        markup = InlineKeyboardMarkup()
+        markup.row_width = len(self.options)
+
+        for i, option in enumerate(self.options):
+            #Если порядковый номер ответа - номер правильного ответа, то:
+            if i == self.answer_id:
+                markup.add(InlineKeyboardButton(option, callback_data='correct'))
+            else:
+                markup.add(InlineKeyboardButton(option, callback_data='wrong'))
+                
         return markup
 
 # Задание 4 - заполни список своими вопросами
