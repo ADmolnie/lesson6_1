@@ -1,36 +1,36 @@
-import telebot
-from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
-# Задание 2 - Импортируй нужные классы
+# Задание №3
+import requests
+from collections import defaultdict
+from translate import Translator
 
-class Question:
+# Задание №5
 
-    def __init__(self, text, answer_id, *options):
-        self.__text = text
-        self.__answer_id = answer_id
-        self.options = options
+class TextAnalysis():   
+    
+    # Задание №1
+    memory = defaultdict(list)
 
-    # Задание 1 - Создай геттер для получения текста вопроса
-    @property
-    def text(self):
-            return self.__text
-        # Задание 3 - Создай метод для генерации Inline клавиатуры
+    def __init__(self, text, owner):
 
-    def gen_markup(self):
-        markup = InlineKeyboardMarkup()
-        markup.row_width = len(self.options)
+        # Задание №2
+        TextAnalysis.memory[owner].append(self)
 
-        for i, option in enumerate(self.options):
-            #Если порядковый номер ответа - номер правильного ответа, то:
-            if i == self.__answer_id:
-                markup.add(InlineKeyboardButton(option, callback_data='correct'))
-            else:
-                markup.add(InlineKeyboardButton(option, callback_data='wrong'))
 
-        return markup
+        self.text = text
+        self.translation = self.__translate(self.text, "ru", "kk")
 
-# Задание 4 - заполни список своими вопросами
-quiz_questions = [
-    Question("Что котики делают, когда никто их не видит?", 1, "Спят", "Пишут мемы"),
-    Question("Как котики выражают свою любовь?", 0, "Громким мурлыканием", "Отправляют фото на Instagram", "Гавкают"),
-    Question("Какие книги котики любят читать?", 3, "Обретение вашего внутреннего урр-мирения", "Тайм-менеджмент или как выделить 18 часов в день для сна", "101 способ уснуть на 5 минут раньше, чем хозяин", "Пособие по управлению людьми")
-]
+        # Задание №6
+        self.response = self.get_answer()
+
+    
+    def get_answer(self):
+        res = self.__translate("I don't know how to help", "en", "ru")
+        return res
+
+    def __translate(self, text, from_lang, to_lang):
+        try:
+            # Задание №4
+            translator = Translator(from_lang=from_lang, to_lang=to_lang)
+            return translator.translate(text)
+        except:
+            return "Перевод не удался"
